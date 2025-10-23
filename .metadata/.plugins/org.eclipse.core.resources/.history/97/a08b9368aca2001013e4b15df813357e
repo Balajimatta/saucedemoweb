@@ -1,0 +1,61 @@
+import org.apache.poi.ss.usermodel.*;
+		import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+		import org.openqa.selenium.By;
+		import org.openqa.selenium.WebDriver;
+		import org.openqa.selenium.WebElement;
+		import org.openqa.selenium.chrome.ChromeDriver;
+
+		import java.io.FileInputStream;
+		import java.io.FileOutputStream;
+		import java.io.IOException;
+public class Booklet {
+
+	public static void main(String[] args) throws IOException, InterruptedException {
+		        // ---------- Step 1: Load input Excel ----------
+		       // String inputFile = "input.xlsx";
+		        FileInputStream fis = new FileInputStream("C:\\Users\\balaj\\OneDrive\\Desktop\\Book1.xlsx");
+		        Workbook workbook = new XSSFWorkbook(fis);
+		        Sheet Sheet = workbook.getSheet("sheet1");
+		        // ---------- Step 2: Create output Excel ----------
+		        Workbook outWorkbook = new XSSFWorkbook("C:\\Users\\balaj\\OneDrive\\Desktop\\Book2.xlsx");
+		        Sheet outSheet = outWorkbook.getSheet("results");
+		        Row header = outSheet.createRow(0);
+		        header.createCell(0).setCellValue("Input Data");
+		        header.createCell(1).setCellValue("Result");
+
+		        // ---------- Step 3: Setup Selenium ----------
+		      //  System.setProperty("webdriver.chrome.driver", "chromedriver.exe"); // path to chromedriver
+		        //WebDriver driver = new ChromeDriver();
+		        //driver.manage().window().maximize();
+		        //driver.get("https://www.google.com");
+
+		        // ---------- Step 4: Loop through Excel rows ----------
+		        int rowIndex = 1;
+		        for (int i = 1; i <= Sheet.getLastRowNum(); i++) {  // skip header row
+		            Row row = Sheet.getRow(i);
+		            if (row == null) continue;
+
+		            String searchText = row.getCell(0).getStringCellValue();
+
+		        
+
+		            // Write into output Excel
+		            Row outRow = outSheet.createRow(rowIndex++);
+		            outRow.createCell(0).setCellValue(searchText);
+		            
+		        }
+
+		        // ---------- Step 5: Save output ----------
+		        FileOutputStream fos = new FileOutputStream("output.xlsx");
+		        outWorkbook.write(fos);
+		        fos.close();
+
+		        // Close everything
+		       
+		        workbook.close();
+		        outWorkbook.close();
+
+		        System.out.println("Automation Completed! Results saved in output.xlsx");
+		    }
+		}
+

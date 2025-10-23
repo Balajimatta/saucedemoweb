@@ -1,0 +1,79 @@
+package hybrid;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.time.Duration;
+
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+import sauce_demo.Login_of_sauce;
+import sauce_demo.Logout_sauce;
+import sauce_demo.Your_product;
+import sauce_demo.add_to_cart_sauce;
+import sauce_demo.checkout;
+
+public class DDFsauce {
+
+	public static void main(String[] args) throws IOException, InterruptedException {
+		WebDriver wd=new ChromeDriver();
+		try {
+			wd.get("https://www.saucedemo.com/");
+			wd.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
+			
+		} catch (Exception e) {
+			System.out.println("internet issue");
+		}
+		Login_of_sauce lc=new Login_of_sauce(wd);
+		add_to_cart_sauce ac=new add_to_cart_sauce(wd);
+		Your_product yp=new Your_product(wd);
+		checkout co=new checkout(wd);
+		Logout_sauce lo=new Logout_sauce(wd);
+		
+		FileInputStream www=new FileInputStream("C:\\Users\\balaj\\OneDrive\\Desktop\\sauce_1.xlsx");
+	    XSSFWorkbook wb=new XSSFWorkbook(www);
+	    Thread.sleep(2000);
+	    XSSFSheet sheet11=wb.getSheet("KEYS");
+	    for(int i=7;i<=sheet11.getLastRowNum();i++)
+	    {
+	    	XSSFRow raw=sheet11.getRow(i);
+	    	XSSFCell user=raw.getCell(0);
+	    	XSSFCell pw=raw.getCell(1);
+	    	System.out.println(user+" "+pw);
+	    	lc.username(user.toString());
+	    	lc.password(pw.toString());
+	    	lc.login();
+	    	try
+	    	{
+	    		ac.allElement();
+	    		yp.AllElements();
+	    		
+	    		XSSFRow chk=sheet11.getRow(12);
+	    		XSSFCell firstname=chk.getCell(0);
+	    		XSSFCell lastname=chk.getCell(1);
+	    		XSSFCell pinc=chk.getCell(2);
+	    		co.fname(firstname.toString());
+	    		co.lname(lastname.toString());
+	    		co.pin(pinc.toString());
+	    		System.out.println(firstname+" "+lastname+" "+pinc);
+	    		Thread.sleep(2000);
+	    		co.rbuttons();
+	    		Thread.sleep(2000);
+	    		lo.menu();
+	    		lo.logout();
+	    	}
+	    	catch(Exception e)
+	    	{
+	    		System.out.println("invalid password");
+	    	}
+
+	    	
+	    }
+	}
+	
+
+}

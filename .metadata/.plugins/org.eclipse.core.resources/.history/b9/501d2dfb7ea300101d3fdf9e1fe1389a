@@ -1,0 +1,106 @@
+package hybrid;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.time.Duration;
+
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+import sauce_demo.Login_of_sauce;
+import sauce_demo.Logout_sauce;
+import sauce_demo.Your_product;
+import sauce_demo.add_to_cart_sauce;
+import sauce_demo.checkout;
+
+public class HYBRID_SAUCE {
+
+	public static void main(String[] args) throws IOException {
+	WebDriver wd =new ChromeDriver();
+	Login_of_sauce lc=new Login_of_sauce(wd);
+	add_to_cart_sauce ac=new add_to_cart_sauce(wd);
+	Your_product yp=new Your_product(wd);
+	checkout co=new checkout(wd);
+	Logout_sauce lo=new Logout_sauce(wd);
+	FileInputStream f_ile=new FileInputStream("C:\\Users\\balaj\\OneDrive\\Desktop\\sauce_1.xlsx");
+	XSSFWorkbook wk1=new XSSFWorkbook(f_ile);
+	XSSFSheet exsh=wk1.getSheet("KEYS");
+	
+	for(int j=14;j<=exsh.getLastRowNum();j++)//MAIN KEYS
+	{
+	 XSSFRow row1=exsh.getRow(j);
+	 XSSFCell keydata=row1.getCell(1);
+	 
+		
+	 try {
+	 switch(keydata.toString())
+	 {
+	 case "URL":
+		 wd.get("https://www.saucedemo.com/");
+			wd.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
+		break;
+			
+	 case "LOGIN":
+		 for(int k=1;k<=exsh.getLastRowNum();k++)//LOGIN KEYS
+			{
+			 XSSFRow row2=exsh.getRow(k);
+			 XSSFCell keydata2=row2.getCell(1);
+			 for(int i=5;i<=exsh.getLastRowNum();i++)//LOOP OF USERSNME AND PASSOWRD 
+				{
+					XSSFRow row0=exsh.getRow(i);
+			    	XSSFCell uns=	row0.getCell(0);
+				    XSSFCell pws=  row0.getCell(1);
+			        switch(keydata2.toString())
+			        {
+			             case "USERNAME":
+		                 lc.username(uns.toString());
+		                 break;
+			             case "PASSWORD":
+		                 lc.password(pws.toString());
+		                 break;
+			             case "LOGIN2":
+		                 lc.login();
+		                 break;
+			        }
+			     }
+			}
+		 break;
+	 case "ADD_TO_CART":
+	    ac.allElement();
+	    break;
+	 case "YOUR_PRODUCT":
+		yp.AllElements();
+		break;
+	 case " CHECKOUT":
+		 XSSFRow chk=exsh.getRow(11);
+ 		XSSFCell firstname=chk.getCell(0);
+ 		XSSFCell lastname=chk.getCell(1);
+ 		XSSFCell pinc=chk.getCell(2);
+ 		co.fname(firstname.toString());
+ 		co.lname(lastname.toString());
+ 		co.pin(pinc.toString());
+ 		Thread.sleep(2000);
+ 		co.rbuttons();
+ 		break;
+	 case "LOGOUT":
+		 
+ 		Thread.sleep(2000);
+ 		lo.menu();
+ 		lo.logout();
+ 		break;
+	 }
+	 }
+	catch(Exception e)
+	{
+		System.out.println("INVALID CREDENTIAL");
+	}
+
+	}
+	
+
+}
+}

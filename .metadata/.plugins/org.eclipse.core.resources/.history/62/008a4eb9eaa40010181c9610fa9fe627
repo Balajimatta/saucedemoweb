@@ -1,0 +1,52 @@
+package hybrid;
+
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.time.Duration;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.annotations.Test;
+
+import sauce_demo.Login_of_sauce;
+import sauce_demo.Logout_sauce;
+
+public class Database_tt {
+	@Test
+	public void DatabaseProgramme() throws SQLException{
+	WebDriver wd=new ChromeDriver();
+	Login_of_sauce lg=new Login_of_sauce(wd);
+	Logout_sauce lo=new Logout_sauce(wd);
+	
+	
+		wd.get("https://www.saucedemo.com/");
+		wd.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
+		wd.manage().window().maximize();
+		Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/sauce","root","3469");
+		Statement stmt=con.createStatement();
+		String s="select * from login";
+	    ResultSet res=stmt.executeQuery(s);
+		while(res.next());
+		{
+			    String un=res.getString(1);
+			    String pw=res.getString(2);
+			    lg.allin(un,pw);
+			    try 
+			    {
+			    	lo.menu();
+			    	lo.logout();
+			    }
+			    catch(Exception e)
+			    {
+			    	System.out.println("invalid");
+			    }
+		}
+		//int res1=stmt.executeUpdate("insert into login values('standard_use','secret')");
+		
+
+}
+}

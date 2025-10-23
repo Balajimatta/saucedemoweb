@@ -1,0 +1,20 @@
+package hybrid;
+
+import java.io.FileInputStream;
+import java.time.Duration;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+public class HYBRID_SAUCE {
+
+	public static void main(String[] args) {
+	WebDriver wd =new ChromeDriver();
+	wd.get("https://www.saucedemo.com/");
+	wd.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
+	
+	FileInputStream file11=new FileInputStream("")
+
+	}
+
+}

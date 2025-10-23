@@ -1,0 +1,39 @@
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+public class Booklet {
+
+	public static void main(String[] args) throws IOException, InterruptedException {
+		       
+		        FileInputStream fis = new FileInputStream("C:\\Users\\balaj\\OneDrive\\Desktop\\Book1.xlsx");
+		        Workbook workbook = new XSSFWorkbook(fis);
+		        Sheet Sheet = workbook.getSheet("sheet1");
+		        Workbook outWorkbook = new XSSFWorkbook("C:\\Users\\balaj\\OneDrive\\Desktop\\Book2.xlsx");
+		        Sheet outSheet = outWorkbook.getSheet("results");
+		       
+
+
+		      
+		        int rowIndex = 0;
+		        for (int i = 1; i <= Sheet.getLastRowNum(); i++) 
+		        {  
+		            Row row = Sheet.getRow(i);
+		            if (row == null) continue;
+
+		            String searchText = row.getCell(0).getStringCellValue();
+		            Row outRow = outSheet.createRow(rowIndex++);
+		            outRow.createCell(0).setCellValue(searchText);
+		            
+		        }
+		        FileOutputStream fos = new FileOutputStream("output.xlsx");
+		        outWorkbook.write(fos);
+		        fos.close();
+		        workbook.close();
+		        outWorkbook.close();
+
+		        System.out.println("Automation Completed! Results saved in output.xlsx");
+		    }
+		}
+

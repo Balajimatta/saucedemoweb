@@ -1,0 +1,73 @@
+package hybrid;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.time.Duration;
+
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+import sauce_demo.Login_of_sauce;
+import sauce_demo.Logout_sauce;
+import sauce_demo.Your_product;
+import sauce_demo.add_to_cart_sauce;
+import sauce_demo.checkout;
+
+public class HYBRID_SAUCE {
+
+	public static void main(String[] args) throws IOException {
+	WebDriver wd =new ChromeDriver();
+	Login_of_sauce lc=new Login_of_sauce(wd);
+	add_to_cart_sauce ac=new add_to_cart_sauce(wd);
+	Your_product yp=new Your_product(wd);
+	checkout co=new checkout(wd);
+	Logout_sauce lo=new Logout_sauce(wd);
+	FileInputStream f_ile=new FileInputStream("C:\\Users\\balaj\\OneDrive\\Desktop\\sauce_1.xlsx");
+	XSSFWorkbook wk1=new XSSFWorkbook(f_ile);
+	XSSFSheet exsh=wk1.getSheet("KEYS");
+	for(int j=1;j<=exsh.getLastRowNum();j++)
+	{
+	 XSSFRow row1=exsh.getRow(j);
+	 XSSFCell keydata=row1.getCell(1);
+	 switch(keydata.toString())
+	 {
+	 case "URL":
+		 wd.get("https://www.saucedemo.com/");
+			wd.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
+			
+	 case ""
+	 }
+	 
+			 
+	}
+	
+	
+	
+	for(int i=10;i<=exsh.getLastRowNum();i++)
+	{
+		XSSFRow row0=exsh.getRow(i);
+	XSSFCell username=	row0.getCell(0);
+	XSSFCell password=  row0.getCell(1);
+	try
+	{
+		
+		 
+		
+	}
+	catch(Exception e)
+	{
+		
+	}
+	
+	
+	}
+	
+	
+
+	}
+
+}
